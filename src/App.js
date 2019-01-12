@@ -9,7 +9,7 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {predictions: []};
     }
 
     onImageChange(event) {
@@ -30,8 +30,7 @@ class App extends Component {
             mobilenet.load().then(model => {
                 // Classify the image.
                 model.classify(img).then(predictions => {
-                    console.log('Predictions: ');
-                    console.log(predictions);
+                    this.setState({predictions: predictions});
                 });
             });
         }
@@ -48,17 +47,18 @@ class App extends Component {
                     <nav className="navbar navbar-dark bg-dark">
                         <a className="navbar-brand" href="#">TF-JS Visualiser</a>
                     </nav>
-                </div><div className="container">
+                </div>
+                <div className="container">
                     <div className="row mb-3">
                         <div className="custom-file">
                             <label className="custom-file-label">
                                 Choose File
-                            <input type="file" className="custom-file-input" id="customFile" onChange={this.onImageChange.bind(this)}/>
+                                <input type="file" className="custom-file-input" id="customFile" onChange={this.onImageChange.bind(this)}/>
                             </label>
                         </div>
                     </div>
-                {
-                    this.state.image &&
+                    {
+                        this.state.image &&
                         <React.Fragment>
                             <div className="row mb-3">
                                 <div className="col-6 offset-3">
@@ -71,7 +71,33 @@ class App extends Component {
                                 </div>
                             </div>
                         </React.Fragment>
-                }
+                    }
+                    <div className="row mb-6">
+                        <table className="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        Class Rank
+                                    </th>
+                                    <th>
+                                        Class
+                                    </th>
+                                    <th>
+                                        Probability
+                                    </th>
+                                </tr>
+                                {
+                                    this.state.predictions.map(function (prediction, index) {
+                                        return <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td>{prediction.className}</td>
+                                            <td>{prediction.probability.toFixed(2)}</td>
+                                        </tr>
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </React.Fragment>
         );
