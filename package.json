@@ -2,6 +2,7 @@
   "name": "visualisation",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://shubhamjain0594.github.io/tfjs-visualiser",
   "dependencies": {
     "@tensorflow-models/mobilenet": "^0.2.2",
     "@tensorflow/tfjs": "^0.14.0",
